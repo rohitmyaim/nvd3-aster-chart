@@ -39,8 +39,8 @@ nv.models.aster = function() {
           radius = Math.min(availableWidth, availableHeight) / 2,
           innerRadius = donut ? radius * donutRatio : 0,
           //arcRadius = radius-(radius / 5),
-          arcRadius = function (d) {                    
-                    return (radius - innerRadius) * (getHeight(d.data) / 100.0) + innerRadius; 
+          arcRadius = function (d) {
+                    return (radius - innerRadius) * (getHeight(d.data) / 100.0) + innerRadius;
                   },
           container = d3.select(this);
 
@@ -48,7 +48,6 @@ nv.models.aster = function() {
       //------------------------------------------------------------
       // Setup containers and skeleton of chart
 
-      //var wrap = container.selectAll('.nv-wrap.nv-pie').data([data]);
       var wrap = container.selectAll('.nv-wrap.nv-pie').data(data);
       var wrapEnter = wrap.enter().append('g').attr('class','nvd3 nv-wrap nv-pie nv-chart-' + id);
       var gEnter = wrapEnter.append('g');
@@ -85,22 +84,22 @@ nv.models.aster = function() {
       if (donut) {
         arc.innerRadius(radius * donutRatio);
         outlineArc.innerRadius(radius * donutRatio);
-      } 
+      }
 
       // Setup the Pie chart and choose the data element
       var pie = d3.layout.pie()
           .sort(null)
           .value(function(d) { return d.disabled ? 0 : getY(d) });
 
-      var centerText = wrap.select('.nv-pie').selectAll('.nv-score').data(data);      
+      var centerText = wrap.select('.nv-pie').selectAll('.nv-score').data(data);
       centerText.exit().remove();
       var ct = centerText.enter().append('g').attr('class', 'nv-score');
-      ct.append("svg:text")                    
+      ct.append("svg:text")
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
-                    .text(function(d){                        
-                        return d.reduce(function(a, b) {                          
-                          return a + getZ(b)/*(b.disabled ? 0 : getZ(b))*/; 
+                    .text(function(d){
+                        return d.reduce(function(a, b) {
+                          return a + getZ(b)/*(b.disabled ? 0 : getZ(b))*/;
                         }, 0);
                     });
 
@@ -160,12 +159,12 @@ nv.models.aster = function() {
             .attr('fill', function(d,i) { return color(d, i); })
             .attr('stroke', function(d,i) { return color(d, i); });
 
-        ae.append('path').attr("class", "solidArc")              
+        ae.append('path').attr("class", "solidArc")
             .each(function(d) { this._current = d; });
             //.attr('d', arc);
 
         d3.transition(slices.select('.solidArc'))
-            .attr('d', arc)            
+            .attr('d', arc)
 //            .attrTween('d', arcTween);
 
         ae.append('path').attr("class", "outlineArc").attr("fill", "none")
@@ -179,7 +178,7 @@ nv.models.aster = function() {
         if (showLabels) {
           // This does the normal label
           var labelsArc = d3.svg.arc().innerRadius(0);
-          
+
           if (pieLabelsOutside){ labelsArc = arc; }
 
           if (donutLabelsOutside) { labelsArc = d3.svg.arc().outerRadius(outlineArc.outerRadius()); }
@@ -200,7 +199,7 @@ nv.models.aster = function() {
                          rotateAngle += 90;
                        }
                        return 'translate(' + labelsArc.centroid(d) + ') rotate(' + rotateAngle + ')';
-                     } else {                      
+                     } else {
                        d.outerRadius = radius + 10; // Set Outer Coordinate
                        d.innerRadius = radius + 15; // Set Inner Coordinate
                        return 'translate(' + labelsArc.centroid(d) + ')'
@@ -349,7 +348,7 @@ nv.models.aster = function() {
     getZ = _;
     return chart;
   };
-  
+
   chart.description = function(_) {
     if (!arguments.length) return getDescription;
     getDescription = _;
@@ -361,7 +360,7 @@ nv.models.aster = function() {
     showLabels = _;
     return chart;
   };
-  
+
   chart.labelSunbeamLayout = function(_) {
     if (!arguments.length) return labelSunbeamLayout;
     labelSunbeamLayout = _;
@@ -373,7 +372,7 @@ nv.models.aster = function() {
     donutLabelsOutside = _;
     return chart;
   };
-  
+
   chart.pieLabelsOutside = function(_) {
     if (!arguments.length) return pieLabelsOutside;
     pieLabelsOutside = _;
@@ -392,7 +391,7 @@ nv.models.aster = function() {
     donut = _;
     return chart;
   };
-  
+
   chart.donutRatio = function(_) {
     if (!arguments.length) return donutRatio;
     donutRatio = _;

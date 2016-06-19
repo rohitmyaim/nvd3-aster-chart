@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <link href="nv.d3.css" rel="stylesheet" type="text/css">
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+	    <script src="nv.d3.js"></script>
+	    <script src="../aster.js"></script>
+	    <script src="../asterChart.js"></script>
+	</head>
+	<body>
+		<div id="chart1">
+		    <svg  width="500" height="500"></svg>
+		</div>
+		<script type="text/javascript">
+                var data = [
+                				{key:"key1", x:50, y:100, color:"#FF0000"},
+                				{key:"key2", x:200, y:300, color:"#E57C00"},
+                				{key:"key3", x:90, y:100, color:"#8CA732"},
+                				{key:"key4", x:80, y:200, color:"#3ADF00"},
+                			];
+                var chartId = "chart1";
+                nv.addGraph(function() {
+                    var chart = nv.models.asterChart()
+                            .margin({top: 20, right: 20, bottom: 20, left: 20})
+                            .x(function(d) { return d.key; })
+                            .y(function(d) { return d.y })
+                            .values(function(d) { return d })
+                            .color(function(d){
+                                return d.data.color ? d.data.color : null;
+                            })
+                            .tooltipContent(function(key, y, e, graph) {
+                              return '<h3>' + key + '</h3>' +
+                                                    '<p>' + e.point.x  + ' OF ' + y + '</p>';
+                            })
+                            .showLegend(true)
+                            .tooltips(true);
+                    chart.pie.showLabels(false);
+                    chart.showLegend(true);
+                    chart.pie.showLabels(true);
+                    chart.legend.updateState(false);
+                    chart.pie
+                            .donut(true)
+                            .donutRatio(.3)
+                            .donutLabelsOutside(false)
+                            .labelType("custom")
+                            .valueFormat(d3.format('d'))
+                            .z(function(d) {
+                                return d.x;
+                            });
+
+                    d3.select("#"+chartId + " svg")
+                        .datum(data)
+                        .call(chart)
+                    return chart;
+                });
+		</script>
+	</body>
+</html>
